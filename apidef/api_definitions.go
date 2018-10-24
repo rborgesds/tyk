@@ -304,8 +304,10 @@ type ServiceDiscoveryConfiguration struct {
 }
 
 type OIDProviderConfig struct {
-	Issuer    string            `bson:"issuer" json:"issuer"`
-	ClientIDs map[string]string `bson:"client_ids" json:"client_ids"`
+	Issuer                string            `bson:"issuer" json:"issuer"`
+	ClientIDs             map[string]string `bson:"client_ids" json:"client_ids"`
+	IntrospectionEndpoint string            `bson:"introspection_endpoint" json:"introspection_endpoint"`
+	ScopeToPolicyMapping  map[string]string `bson:"scope_to_policy_mapping" json:"scope_to_policy_mapping"`
 }
 
 type OpenIDOptions struct {
