@@ -168,6 +168,7 @@ type VirtualMeta struct {
 	Path                 string `bson:"path" json:"path"`
 	Method               string `bson:"method" json:"method"`
 	UseSession           bool   `bson:"use_session" json:"use_session"`
+	ProxyToTargetIfError bool   `bson:"proxy_to_target_if_error" json:"proxy_to_target_if_error"`
 }
 
 type MethodTransformMeta struct {

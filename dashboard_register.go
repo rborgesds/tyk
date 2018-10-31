@@ -137,13 +137,10 @@ func (h *HTTPDashboardHandler) Register() error {
 }
 
 func (h *HTTPDashboardHandler) StartBeating() error {
-
-	req := h.newRequest(h.HeartBeatEndpoint)
-
 	client := initialiseClient(5 * time.Second)
 
 	for !h.heartBeatStopSentinel {
-		if err := h.sendHeartBeat(req, client); err != nil {
+		if err := h.sendHeartBeat(client); err != nil {
 			log.Warning(err)
 		}
 		time.Sleep(time.Second * 2)
@@ -165,11 +162,13 @@ func (h *HTTPDashboardHandler) newRequest(endpoint string) *http.Request {
 	}
 	req.Header.Set("authorization", h.Secret)
 	req.Header.Set("x-tyk-hostname", hostDetails.Hostname)
+	req.Header.Set("x-tyk-nodeid", NodeID)
+	req.Header.Set("x-tyk-nonce", ServiceNonce)
 	return req
 }
 
-func (h *HTTPDashboardHandler) sendHeartBeat(req *http.Request, client *http.Client) error {
-
+func (h *HTTPDashboardHandler) sendHeartBeat(client *http.Client) error {
+	req := h.newRequest(h.HeartBeatEndpoint)
 	resp, err := client.Do(req)
 	if err != nil {
 		return errors.New("dashboard is down? Heartbeat is failing")
